@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { StorageService } from '../services/storage';
 import { User, UserStatus } from '../types';
-import { ShieldCheck } from 'lucide-react';
 
 interface LoginProps {
   onLogin: (user: User) => void;
@@ -32,11 +31,10 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     <div className="min-h-screen bg-green-50 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
         <div className="flex justify-center mb-6">
-            <div className="h-16 w-16 bg-green-100 rounded-full flex items-center justify-center">
-                <ShieldCheck className="h-10 w-10 text-green-600" />
+            <div className="h-52 w-52 flex items-center justify-center">
+                <img src="/logomarcaesperanca.png" alt="Esperança Nordeste Logo" className="h-52 w-52 object-contain" />
             </div>
         </div>
-        <h2 className="text-2xl font-bold text-center text-green-800 mb-2">Esperança Nordeste</h2>
         <p className="text-center text-gray-500 mb-8">Sistema de Gestão Comercial</p>
         
         <form onSubmit={handleSubmit} className="space-y-6">

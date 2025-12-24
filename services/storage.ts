@@ -3,6 +3,19 @@ import { User, Call, UserRole, UserStatus } from '../types';
 const USERS_KEY = 'esperanca_users';
 const CALLS_KEY = 'esperanca_calls';
 
+// Migrate old EMPLOYEE values to new Funcionario value
+const migrateData = () => {
+  const usersData = localStorage.getItem(USERS_KEY);
+  if (usersData) {
+    const users = JSON.parse(usersData);
+    const migratedUsers = users.map((user: any) => ({
+      ...user,
+      role: user.role === 'EMPLOYEE' ? UserRole.EMPLOYEE : user.role
+    }));
+    localStorage.setItem(USERS_KEY, JSON.stringify(migratedUsers));
+  }
+};
+
 // Seed initial data
 const seedData = () => {
   if (!localStorage.getItem(USERS_KEY)) {
@@ -31,6 +44,7 @@ const seedData = () => {
   }
 };
 
+migrateData();
 seedData();
 
 export const StorageService = {

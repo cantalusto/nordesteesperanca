@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Call, User, UserRole, QuoteStatus, Quotation } from '../types';
 import { StorageService } from '../services/storage';
 import { Phone, Plus, FileText, CheckCircle, Search, Edit3 } from 'lucide-react';
-import { GoogleGenAI } from '@google/genai';
 
 interface CallManagementProps {
   currentUser: User;
@@ -39,13 +38,26 @@ const CallManagement: React.FC<CallManagementProps> = ({ currentUser }) => {
 
   useEffect(() => {
     const term = searchTerm.toLowerCase();
-    const filtered = calls.filter(call => 
+    const filtered = calls.filter(call =>
       call.companyName.toLowerCase().includes(term) ||
       call.clientCode.toLowerCase().includes(term) ||
       call.employeeName.toLowerCase().includes(term)
     );
     setFilteredCalls(filtered);
   }, [searchTerm, calls]);
+
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.margin = '0';
+      document.body.style.padding = '0';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isModalOpen]);
 
   const loadCalls = () => {
     let allCalls = StorageService.getCalls();
@@ -97,30 +109,6 @@ const CallManagement: React.FC<CallManagementProps> = ({ currentUser }) => {
       }
     }
     setIsModalOpen(true);
-  };
-
-  const handleAnalyzeNotes = async () => {
-     // AI Integration Point
-     // If API_KEY is set, we could use it.
-     if(!process.env.API_KEY) {
-         alert("Configure a API Key para usar IA.");
-         return;
-     }
-     
-     try {
-        const ai = new GoogleGenAI({apiKey: process.env.API_KEY});
-        const response = await ai.models.generateContent({
-            model: 'gemini-3-flash-preview',
-            contents: `Analise o sentimento e sugira o próximo passo para esta observação de venda: "${notes}"`,
-        });
-        const suggestion = response.text;
-        if(suggestion) {
-            setNotes(prev => prev + `\n\n[IA Sugestão]: ${suggestion}`);
-        }
-     } catch (err) {
-         console.error(err);
-         alert("Erro ao analisar com IA.");
-     }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -230,7 +218,25 @@ const CallManagement: React.FC<CallManagementProps> = ({ currentUser }) => {
 
       {/* Modal Form */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            width: '100vw',
+            height: '100vh',
+            zIndex: 9999,
+            margin: 0,
+            padding: '1rem',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflowY: 'auto'
+          }}
+        >
           <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6 my-8">
             <h3 className="text-xl font-bold mb-4 border-b pb-2">{editingCall ? 'Editar Registro' : 'Registrar Ligação'}</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -256,14 +262,7 @@ const CallManagement: React.FC<CallManagementProps> = ({ currentUser }) => {
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Observações</label>
-                <div className="relative">
-                    <textarea required className="w-full border rounded p-2 h-24" value={notes} onChange={e => setNotes(e.target.value)} />
-                    {process.env.API_KEY && (
-                        <button type="button" onClick={handleAnalyzeNotes} className="absolute bottom-2 right-2 text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded hover:bg-purple-200">
-                            IA Sugestão
-                        </button>
-                    )}
-                </div>
+                <textarea required className="w-full border rounded p-2 h-24" value={notes} onChange={e => setNotes(e.target.value)} />
               </div>
 
               {/* Quotation Section */}

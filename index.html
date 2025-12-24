@@ -4,6 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Esperança Nordeste - Sistema Comercial</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/logoesperanca-removebg-preview.png" />
+    <link rel="apple-touch-icon" href="/logoesperanca-removebg-preview.png" />
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#166534" />
+    <meta name="description" content="Sistema de Gestão Comercial da Esperança Nordeste" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Esperança Nordeste" />
+    <link rel="manifest" href="/manifest.json" />
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -25,8 +38,9 @@
 </script>
 <link rel="stylesheet" href="/index.css">
 </head>
-  <body class="bg-gray-50 text-slate-800 antialiased">
+  <body class="text-slate-800 antialiased">
     <div id="root"></div>
+  <script src="/register-sw.js"></script>
   <script type="module" src="/index.tsx"></script>
 </body>
 </html>
