@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { User, UserRole } from '../types';
-import { 
-  LayoutDashboard, 
-  PhoneCall, 
-  Users, 
-  FileBarChart, 
-  LogOut, 
-  Menu, 
-  X,
-  Leaf
+import {
+  LayoutDashboard,
+  PhoneCall,
+  Users,
+  FileBarChart,
+  LogOut,
+  Menu,
+  X
 } from 'lucide-react';
 
 interface LayoutProps {
@@ -40,12 +39,12 @@ const Layout: React.FC<LayoutProps> = ({ children, user, onLogout, currentView, 
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-gray-50 flex relative">
       {/* Sidebar - Desktop */}
       <aside className="hidden md:flex flex-col w-64 bg-green-800 text-white fixed h-full z-10">
         <div className="p-6 flex items-center gap-2 border-b border-green-700">
-            <div className="bg-white p-1.5 rounded-full">
-                <Leaf className="text-green-600 h-6 w-6" />
+            <div className="h-10 w-10 flex items-center justify-center">
+                <img src="/logoesperanca-removebg-preview.png" alt="Esperança Nordeste" className="h-10 w-10 object-contain" />
             </div>
           <h1 className="font-bold text-lg leading-tight">Esperança<br/><span className="text-blue-200 text-base font-normal">Nordeste</span></h1>
         </div>
@@ -85,7 +84,7 @@ const Layout: React.FC<LayoutProps> = ({ children, user, onLogout, currentView, 
       {/* Mobile Header */}
       <div className="md:hidden fixed w-full bg-green-800 text-white z-20 flex justify-between items-center p-4 shadow-md">
          <div className="flex items-center gap-2">
-            <Leaf className="text-white h-6 w-6" />
+            <img src="/logoesperanca-removebg-preview.png" alt="Esperança Nordeste" className="h-8 w-8 object-contain" />
             <span className="font-bold">Esperança Nordeste</span>
          </div>
          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
